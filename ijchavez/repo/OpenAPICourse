@@ -483,7 +483,7 @@
             "type" : "string",
             "minLength" : 12,
             "maxLength" : 12,
-            "example" : 8.9924201113E10
+            "example" : A8992420E1A3
           },
           "price" : {
             "type" : "number",
