@@ -1,730 +1,728 @@
 {
-  "openapi" : "3.0.2",
-  "info" : {
-    "version" : "1.0",
-    "title" : "OpenAPI Course",
-    "description" : "Specificacton for API Course",
-    "termsOfService" : "www.example.com/terms",
-    "contact" : {
-      "name" : "Gerardo Chavez",
-      "url" : "www.instagram.com/ijchavez",
-      "email" : "info.gerardo.chavez@gmail.com"
-    },
-    "license" : {
-      "name" : "Apache 2.0",
-      "url" : "https://www.apache.org/licenses/LICENSE-2.0.html"
-    }
-  },
-  "servers" : [ {
-    "url" : "https://dev.example.com",
-    "description" : "Development Server"
-  }, {
-    "url" : "https://qa.example.com",
-    "description" : "QA Server"
-  }, {
-    "url" : "https://prod.example.com",
-    "description" : "Production Server"
-  } ],
-  "paths" : {
-    "/v1/customers" : {
-      "get" : {
-        "summary" : "List Customers",
-        "description" : "Get a list of customers in the system",
-        "tags" : [ "Customers" ],
-        "operationId" : "listCustomersV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/PageNumberParam"
-        }, {
-          "$ref" : "#/components/parameters/PageSizeParam"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "List of Customers",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CustomerPagedList"
-                }
-              }
-            }
-          }
+    "openapi": "3.0.2",
+    "info": {
+        "version": "1.0",
+        "title": "OpenAPI Course",
+        "description": "Specificacton for API Course",
+        "termsOfService": "www.example.com/terms",
+        "contact": {
+            "name": "Gerardo Chavez",
+            "url": "www.instagram.com/ijchavez",
+            "email": "info.gerardo.chavez@gmail.com"
         },
-        "security" : [ ]
-      },
-      "post" : {
-        "summary" : "New Customer",
-        "description" : "Create a new Customer",
-        "tags" : [ "Customers" ],
-        "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Customer"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "201" : {
-            "description" : "Customer Created",
-            "headers" : {
-              "Location" : {
-                "description" : "Location of the created Customer",
-                "schema" : {
-                  "type" : "string",
-                  "format" : "url",
-                  "example" : "http://example.com/v1/customers/{assignedIdValue}"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request"
-          },
-          "409" : {
-            "description" : "Confilct"
-          }
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
         }
-      }
     },
-    "/v1/customers/{customerId}" : {
-      "get" : {
-        "summary" : "Get customer by Id",
-        "description" : "Get a single **Customer** by its *Id value*.",
-        "tags" : [ "Customers" ],
-        "operationId" : "getCustumersByIdV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/CustomerIdPathParam"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Found Customer",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Customer"
-                }
-              }
-            }
-          }
+    "servers": [
+        {
+            "url": "https://dev.example.com",
+            "description": "Development Server"
         },
-        "security" : [ ]
-      },
-      "put" : {
-        "summary" : "Update Customer",
-        "description" : "Update Customer by Id",
-        "tags" : [ "Customers" ],
-        "operationId" : "UpdateCustomerByIdV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/CustomerIdPathParam"
-        } ],
-        "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Customer"
-              }
-            }
-          }
+        {
+            "url": "https://qa.example.com",
+            "description": "QA Server"
         },
-        "responses" : {
-          "204" : {
-            "description" : "Customer Updated"
-          },
-          "400" : {
-            "description" : "Bad Request"
-          },
-          "409" : {
-            "description" : "Conflict"
-          }
+        {
+            "url": "https://prod.example.com",
+            "description": "Production Server"
         }
-      },
-      "delete" : {
-        "summary" : "Delete Customer by Id",
-        "description" : "Delete a single customer by its Id value",
-        "tags" : [ "Customers" ],
-        "operationId" : "deleteCustomerByIdV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/CustomerIdPathParam"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Customer Delete"
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      }
-    },
-    "/v1/customers/{customerId}/orders" : {
-      "post" : {
-        "summary" : "Place Order",
-        "description" : "Place an order by Customer",
-        "tags" : [ "Order Service" ],
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/CustomerIdPathParam"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/BeerOrder"
-              }
-            }
-          },
-          "required" : false
-        },
-        "responses" : {
-          "201" : {
-            "description" : "Order Created",
-            "headers" : {
-              "Location" : {
-                "description" : "Reference to created Order",
-                "style" : "simple",
-                "explode" : false,
-                "schema" : {
-                  "type" : "string",
-                  "format" : "uri"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Reqeust"
-          },
-          "404" : {
-            "description" : "Not Found"
-          },
-          "409" : {
-            "description" : "Conflict"
-          }
-        },
-        "callbacks" : {
-          "orderStatusChange" : {
-            "${request.body#/orderStatusCallbackUrl}" : {
-              "description" : "Webhook for order status change notifications",
-              "post" : {
-                "requestBody" : {
-                  "content" : {
-                    "application/json" : {
-                      "schema" : {
-                        "$ref" : "#/components/schemas/OrderId"
-                      }
+    ],
+    "paths": {
+        "/v1/customers": {
+            "get": {
+                "summary": "List Customers",
+                "description": "Get a list of customers in the system",
+                "tags": [
+                    "Customers"
+                ],
+                "operationId": "listCustomersV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PageNumberParam"
+                    },
+                    {
+                        "$ref": "#/components/parameters/PageSizeParam"
                     }
-                  }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Customers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomerPagedList"
+                                }
+                            }
+                        }
+                    }
                 },
-                "responses" : {
-                  "200" : {
-                    "description" : "Okay"
-                  }
+                "security": []
+            },
+            "post": {
+                "summary": "New Customer",
+                "description": "Create a new Customer",
+                "tags": [
+                    "Customers"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Customer Created",
+                        "headers": {
+                            "Location": {
+                                "description": "Location of the created Customer",
+                                "schema": {
+                                    "type": "string",
+                                    "format": "url",
+                                    "example": "http://example.com/v1/customers/{assignedIdValue}"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Confilct"
+                    }
                 }
-              }
             }
-          }
-        }
-      }
-    },
-    "/v1/beers" : {
-      "get" : {
-        "summary" : "List Beers",
-        "description" : "List all beers in system",
-        "tags" : [ "Beers" ],
-        "operationId" : "listofBeersV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/PageNumberParam"
-        }, {
-          "$ref" : "#/components/parameters/PageSizeParam"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "List of Beers",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/BeerPagedList"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request"
-          }
-        }
-      },
-      "post" : {
-        "summary" : "New Beer",
-        "description" : "Create a new Beer",
-        "tags" : [ "Beers" ],
-        "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Beer"
-              }
-            }
-          }
         },
-        "responses" : {
-          "201" : {
-            "description" : "Beer Created",
-            "headers" : {
-              "Location" : {
-                "description" : "Location of the created Beer",
-                "schema" : {
-                  "type" : "string",
-                  "format" : "url",
-                  "example" : "http://example.com/v1/beers/{assignedIdValue}"
+        "/v1/customers/{customerId}": {
+            "get": {
+                "summary": "Get customer by Id",
+                "description": "Get a single **Customer** by its *Id value*.",
+                "tags": [
+                    "Customers"
+                ],
+                "operationId": "getCustumersByIdV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CustomerIdPathParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Found Customer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "put": {
+                "summary": "Update Customer",
+                "description": "Update Customer by Id",
+                "tags": [
+                    "Customers"
+                ],
+                "operationId": "UpdateCustomerByIdV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CustomerIdPathParam"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Customer Updated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
                 }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request"
-          },
-          "409" : {
-            "description" : "Conflict"
-          }
-        }
-      }
-    },
-    "/v1/beers/{beerId}" : {
-      "get" : {
-        "summary" : "Get Beer by Id",
-        "description" : "Get a single beer by its ID value.",
-        "tags" : [ "Beers" ],
-        "operationId" : "getBeerbyIdV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/BeerIdParam"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Beer Found by Id",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Beer"
+            },
+            "delete": {
+                "summary": "Delete Customer by Id",
+                "description": "Delete a single customer by its Id value",
+                "tags": [
+                    "Customers"
+                ],
+                "operationId": "deleteCustomerByIdV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CustomerIdPathParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer Delete"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
                 }
-              }
             }
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      },
-      "put" : {
-        "summary" : "Update Beer by Id",
-        "description" : "Update Beer by its Id value",
-        "tags" : [ "Beers" ],
-        "operationId" : "updateBeerByIdV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/BeerIdParam"
-        } ],
-        "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Beer"
-              }
-            }
-          }
         },
-        "responses" : {
-          "204" : {
-            "description" : "beer updated"
-          },
-          "400" : {
-            "description" : "Bad Request"
-          },
-          "404" : {
-            "description" : "Not Found"
-          },
-          "409" : {
-            "description" : "Conflict"
-          }
-        }
-      },
-      "delete" : {
-        "summary" : "Delete Beer by Id",
-        "description" : "Delete Beer by its Id Value",
-        "tags" : [ "Beers" ],
-        "operationId" : "deleteBeerByIdV1",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/BeerIdParam"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Beer Delete"
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      }
-    }
-  },
-  "security" : [ {
-    "BasicAuth" : [ ]
-  }, {
-    "JwtAuthToken" : [ ]
-  } ],
-  "components" : {
-    "securitySchemes" : {
-      "BasicAuth" : {
-        "type" : "http",
-        "scheme" : "basic"
-      },
-      "JwtAuthToken" : {
-        "type" : "http",
-        "scheme" : "bearer",
-        "bearerFormat" : "JWT"
-      }
-    },
-    "schemas" : {
-      "Address" : {
-        "type" : "object",
-        "properties" : {
-          "line1" : {
-            "type" : "string",
-            "example" : "1031 Lima Av"
-          },
-          "city" : {
-            "type" : "string",
-            "example" : "Constitución"
-          },
-          "stateCode" : {
-            "type" : "string",
-            "minLength" : 2,
-            "maxLength" : 2,
-            "description" : "2 Letter State Code",
-            "enum" : [ "BA", "LP", "CB", "JU", "DF" ]
-          },
-          "zipCode" : {
-            "type" : "string",
-            "example" : "AAU1073"
-          }
-        }
-      },
-      "Customer" : {
-        "type" : "object",
-        "description" : "Customer Object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "uuid",
-            "readOnly" : true
-          },
-          "firstName" : {
-            "type" : "string",
-            "minLength" : 2,
-            "maxLength" : 100,
-            "example" : "Gerardo"
-          },
-          "lastName" : {
-            "type" : "string",
-            "minLength" : 2,
-            "maxLength" : 100,
-            "example" : "Chavez"
-          },
-          "address" : {
-            "$ref" : "#/components/schemas/Address"
-          }
-        }
-      },
-      "CustomerList" : {
-        "type" : "array",
-        "minItems" : 1,
-        "maxItems" : 100,
-        "description" : "List of Customers",
-        "items" : {
-          "$ref" : "#/components/schemas/Customer"
-        }
-      },
-      "Brewery" : {
-        "type" : "object",
-        "properties" : {
-          "breweryName" : {
-            "type" : "string",
-            "example" : "Buller"
-          },
-          "beerLocation" : {
-            "$ref" : "#/components/schemas/Address"
-          }
-        }
-      },
-      "Beer" : {
-        "type" : "object",
-        "description" : "Type of Beer",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "uuid",
-            "readOnly" : true
-          },
-          "beerName" : {
-            "type" : "string",
-            "minLength" : 6,
-            "maxLength" : 100,
-            "example" : "Carlsberg"
-          },
-          "beerStyle" : {
-            "type" : "string",
-            "minLength" : 3,
-            "maxLength" : 100,
-            "enum" : [ "ALE", "PALE_ALE", "IPA", "WHEAT", "LAGER" ],
-            "example" : "ALE"
-          },
-          "upc" : {
-            "type" : "string",
-            "minLength" : 12,
-            "maxLength" : 12,
-            "example" : A8992420E1A3
-          },
-          "price" : {
-            "type" : "number",
-            "format" : "float",
-            "example" : 9.99
-          },
-          "quantityonhand" : {
-            "type" : "integer",
-            "format" : "int32",
-            "minLength" : 0,
-            "maxLength" : 9999,
-            "example" : 12
-          },
-          "brewery" : {
-            "$ref" : "#/components/schemas/Brewery"
-          }
-        }
-      },
-      "BeerList" : {
-        "type" : "array",
-        "minItems" : 1,
-        "maxItems" : 100,
-        "description" : "List of Beers",
-        "items" : {
-          "$ref" : "#/components/schemas/Beer"
-        }
-      },
-      "BeerPagedList" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/PagedResponse"
-        } ],
-        "properties" : {
-          "content" : {
-            "$ref" : "#/components/schemas/BeerList"
-          }
-        }
-      },
-      "BeerOrder" : {
-        "required" : [ "customerId" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "uuid",
-            "nullable" : true,
-            "readOnly" : true
-          },
-          "customerId" : {
-            "type" : "string",
-            "format" : "uuid",
-            "readOnly" : true
-          },
-          "customerRef" : {
-            "type" : "string",
-            "nullable" : true
-          },
-          "beerOrderLines" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BeerOrderLine"
+        "/v1/beers": {
+            "get": {
+                "summary": "List Beers",
+                "description": "List all beers in system",
+                "tags": [
+                    "Beers"
+                ],
+                "operationId": "listofBeersV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PageNumberParam"
+                    },
+                    {
+                        "$ref": "#/components/parameters/PageSizeParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Beers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BeerPagedList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "summary": "New Beer",
+                "description": "Create a new Beer",
+                "tags": [
+                    "Beers"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Beer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Beer Created",
+                        "headers": {
+                            "Location": {
+                                "description": "Location of the created Beer",
+                                "schema": {
+                                    "type": "string",
+                                    "format": "url",
+                                    "example": "http://example.com/v1/beers/{assignedIdValue}"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
             }
-          },
-          "orderStatusCallbackUrl" : {
-            "type" : "string",
-            "format" : "uri"
-          }
+        },
+        "/v1/beers/{beerId}": {
+            "get": {
+                "summary": "Get Beer by Id",
+                "description": "Get a single beer by its ID value.",
+                "tags": [
+                    "Beers"
+                ],
+                "operationId": "getBeerbyIdV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/BeerIdParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Beer Found by Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Beer"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update Beer by Id",
+                "description": "Update Beer by its Id value",
+                "tags": [
+                    "Beers"
+                ],
+                "operationId": "updateBeerByIdV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/BeerIdParam"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Beer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "beer updated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete Beer by Id",
+                "description": "Delete Beer by its Id Value",
+                "tags": [
+                    "Beers"
+                ],
+                "operationId": "deleteBeerByIdV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/BeerIdParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Beer Delete"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
         }
-      },
-      "BeerOrderLine" : {
-        "required" : [ "orderQuantity", "upc" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "uuid",
-            "nullable" : true,
-            "readOnly" : true
-          },
-          "beerId" : {
-            "type" : "string",
-            "format" : "uuid",
-            "readOnly" : true
-          },
-          "upc" : {
-            "type" : "string"
-          },
-          "orderQuantity" : {
-            "maximum" : 999,
-            "minimum" : 1,
-            "type" : "integer"
-          },
-          "quantityAllocated" : {
-            "type" : "integer",
-            "nullable" : true,
-            "readOnly" : true
-          }
-        }
-      },
-      "PagedResponse" : {
-        "type" : "object",
-        "properties" : {
-          "pageable" : {
-            "$ref" : "#/components/schemas/PagedResponse_pageable"
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "last" : {
-            "type" : "boolean"
-          },
-          "totalElements" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "size" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "number" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "numberOfElements" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "sort" : {
-            "$ref" : "#/components/schemas/PagedResponse_pageable_sort"
-          },
-          "first" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "PagedResponse_pageable_sort" : {
-        "type" : "object",
-        "properties" : {
-          "sorted" : {
-            "type" : "boolean"
-          },
-          "unsorted" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "PagedResponse_pageable" : {
-        "type" : "object",
-        "properties" : {
-          "sort" : {
-            "$ref" : "#/components/schemas/PagedResponse_pageable_sort"
-          },
-          "offset" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "pageNumber" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "pageSize" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "paged" : {
-            "type" : "boolean"
-          },
-          "unpaged" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "CustomerPagedList" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/PagedResponse"
-        } ],
-        "properties" : {
-          "content" : {
-            "$ref" : "#/components/schemas/CustomerList"
-          }
-        }
-      },
-      "OrderId" : {
-        "type" : "object",
-        "properties" : {
-          "orderId" : {
-            "type" : "string",
-            "format" : "uuid"
-          },
-          "orderStatus" : {
-            "type" : "string"
-          }
-        }
-      }
     },
-    "parameters" : {
-      "PageNumberParam" : {
-        "name" : "pageNumber",
-        "in" : "query",
-        "description" : "Page Number",
-        "schema" : {
-          "type" : "integer",
-          "format" : "int32",
-          "default" : 1
+    "security": [
+        {
+            "BasicAuth": []
+        },
+        {
+            "JwtAuthToken": []
         }
-      },
-      "PageSizeParam" : {
-        "name" : "pageSize",
-        "in" : "query",
-        "description" : "Page Size",
-        "required" : false,
-        "schema" : {
-          "type" : "integer",
-          "format" : "int32",
-          "default" : 25
+    ],
+    "components": {
+        "securitySchemes": {
+            "BasicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            },
+            "JwtAuthToken": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "Address": {
+                "type": "object",
+                "properties": {
+                    "line1": {
+                        "type": "string",
+                        "example": "1031 Lima Av"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Constitución"
+                    },
+                    "stateCode": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2,
+                        "description": "2 Letter State Code",
+                        "enum": [
+                            "BA",
+                            "LP",
+                            "CB",
+                            "JU",
+                            "DF"
+                        ]
+                    },
+                    "zipCode": {
+                        "type": "string",
+                        "example": "AAU1073"
+                    }
+                }
+            },
+            "Customer": {
+                "type": "object",
+                "description": "Customer Object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 100,
+                        "example": "Gerardo"
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 100,
+                        "example": "Chavez"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/Address"
+                    }
+                }
+            },
+            "CustomerList": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "description": "List of Customers",
+                "items": {
+                    "$ref": "#/components/schemas/Customer"
+                }
+            },
+            "Brewery": {
+                "type": "object",
+                "properties": {
+                    "breweryName": {
+                        "type": "string",
+                        "example": "Buller"
+                    },
+                    "beerLocation": {
+                        "$ref": "#/components/schemas/Address"
+                    }
+                }
+            },
+            "Beer": {
+                "type": "object",
+                "description": "Type of Beer",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "beerName": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 100,
+                        "example": "Carlsberg"
+                    },
+                    "beerStyle": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 100,
+                        "enum": [
+                            "ALE",
+                            "PALE_ALE",
+                            "IPA",
+                            "WHEAT",
+                            "LAGER"
+                        ],
+                        "example": "ALE"
+                    },
+                    "upc": {
+                        "type": "string",
+                        "minLength": 12,
+                        "maxLength": 12,
+                        "example": A8992420E1A3
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 9.99
+                    },
+                    "quantityonhand": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minLength": 0,
+                        "maxLength": 9999,
+                        "example": 12
+                    },
+                    "brewery": {
+                        "$ref": "#/components/schemas/Brewery"
+                    }
+                }
+            },
+            "BeerList": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "description": "List of Beers",
+                "items": {
+                    "$ref": "#/components/schemas/Beer"
+                }
+            },
+            "BeerPagedList": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/PagedResponse"
+                    }
+                ],
+                "properties": {
+                    "content": {
+                        "$ref": "#/components/schemas/BeerList"
+                    }
+                }
+            },
+            "BeerOrder": {
+                "required": [
+                    "customerId"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "customerId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "customerRef": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "beerOrderLines": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BeerOrderLine"
+                        }
+                    },
+                    "orderStatusCallbackUrl": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            },
+            "BeerOrderLine": {
+                "required": [
+                    "orderQuantity",
+                    "upc"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "beerId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "upc": {
+                        "type": "string"
+                    },
+                    "orderQuantity": {
+                        "maximum": 999,
+                        "minimum": 1,
+                        "type": "integer"
+                    },
+                    "quantityAllocated": {
+                        "type": "integer",
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                }
+            },
+            "PagedResponse": {
+                "type": "object",
+                "properties": {
+                    "pageable": {
+                        "$ref": "#/components/schemas/PagedResponse_pageable"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "last": {
+                        "type": "boolean"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "number": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "numberOfElements": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sort": {
+                        "$ref": "#/components/schemas/PagedResponse_pageable_sort"
+                    },
+                    "first": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "PagedResponse_pageable_sort": {
+                "type": "object",
+                "properties": {
+                    "sorted": {
+                        "type": "boolean"
+                    },
+                    "unsorted": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "PagedResponse_pageable": {
+                "type": "object",
+                "properties": {
+                    "sort": {
+                        "$ref": "#/components/schemas/PagedResponse_pageable_sort"
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageNumber": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "paged": {
+                        "type": "boolean"
+                    },
+                    "unpaged": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "CustomerPagedList": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/PagedResponse"
+                    }
+                ],
+                "properties": {
+                    "content": {
+                        "$ref": "#/components/schemas/CustomerList"
+                    }
+                }
+            },
+            "OrderId": {
+                "type": "object",
+                "properties": {
+                    "orderId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "orderStatus": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "PageNumberParam": {
+                "name": "pageNumber",
+                "in": "query",
+                "description": "Page Number",
+                "schema": {
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 1
+                }
+            },
+            "PageSizeParam": {
+                "name": "pageSize",
+                "in": "query",
+                "description": "Page Size",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 25
+                }
+            },
+            "BeerIdParam": {
+                "name": "beerId",
+                "in": "path",
+                "description": "Beer Id",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                }
+            },
+            "CustomerIdPathParam": {
+                "name": "customerId",
+                "in": "path",
+                "description": "Customer Id",
+                "required": true,
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                }
+            }
         }
-      },
-      "BeerIdParam" : {
-        "name" : "beerId",
-        "in" : "path",
-        "description" : "Beer Id",
-        "required" : true,
-        "schema" : {
-          "type" : "string",
-          "format" : "uuid"
-        }
-      },
-      "CustomerIdPathParam" : {
-        "name" : "customerId",
-        "in" : "path",
-        "description" : "Customer Id",
-        "required" : true,
-        "style" : "simple",
-        "explode" : false,
-        "schema" : {
-          "type" : "string",
-          "format" : "uuid"
-        }
-      }
     }
-  }
 }
