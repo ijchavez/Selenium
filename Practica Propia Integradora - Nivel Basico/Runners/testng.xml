@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+    <suite name = "Clase16. Runner TestNG Spotify" verbose="1">
+        <test name = "Ejercicio Testing">
+            <parameter name="specificTag" value="h2"/>
+            <groups>
+                <run>
+                    <include name = "successTest" />
+
+                    <include name = "failTest" />
+                </run>
+            </groups>
+
+            <classes>
+                <class name = "Clase16.SpotifyTestNG">
+
+                </class>
+                <class name = "Clase16.BaseTest"></class>
+                <class name = "Clase16.BaseUITest"></class>
+
+            </classes>
+        </test>
+    </suite>
